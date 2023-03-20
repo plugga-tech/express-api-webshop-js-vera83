@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 //routes importer
 const usersRouter = require("./routes/users");
+const productsRouter = require("./routes/products");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 
 //apply route middleware
 app.use("/api/users", usersRouter);
+app.use("/api/products", productsRouter);
 
 //connect to database
 async function init() {

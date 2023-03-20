@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const userModel = require("../models/user");
 
-router.get("/", (req, res) => {
-  res.send("users list");
+router.get("/", async (req, res) => {
+  const users = await userModel.find();
+  res.send(users);
 });
 
 router.post("/", (req, res) => {
@@ -10,9 +12,16 @@ router.post("/", (req, res) => {
   res.send(id);
 });
 
-router.post("/add", (req, res) => {
+router.post("/add", async (req, res) => {
+  //gör validering av input och kryptera lösenord
+
   const body = req.body;
-  res.send(body);
+
+  const user = await userModel.create({
+    ...body,
+    id: crypto.randomUUID(),
+  });
+  res.send(user);
 });
 
 router.post("/login", (req, res) => {
