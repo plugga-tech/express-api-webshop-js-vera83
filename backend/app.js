@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 //Import route file
 const usersRouter = require("./routes/users");
 const productsRouter = require("./routes/products");
+const orderRouter = require("./routes/orders");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 //apply route middleware
 app.use("/api/users", usersRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/orders", orderRouter);
 
 //connect to database
 async function init() {
