@@ -4,7 +4,7 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-//routes importer
+//Import route file
 const usersRouter = require("./routes/users");
 const productsRouter = require("./routes/products");
 
@@ -28,7 +28,7 @@ async function init() {
     console.log(error);
   }
   app.listen(3000, () => {
-    console.log("server started on 3000");
+    console.log("server started on PORT 3000");
   });
 }
 
