@@ -13,6 +13,7 @@ router.get("/:id", async (req, res) => {
   res.send(product);
 });
 
+//SKAPA PRODUKT
 router.post("/add", async (req, res) => {
   const body = req.body;
   const product = await productModel.create({
