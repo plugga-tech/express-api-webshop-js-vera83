@@ -1,38 +1,48 @@
 const express = require("express");
 const router = express.Router();
 const userModel = require("../models/user");
-const crypto = require("crypto");
+
+// KOD FÖR GODKÄNT
 
 //HÄMTA ALLA USERS
 router.get("/", async (req, res) => {
-  const users = await userModel.find();
+  const dbUsers = await userModel.find();
+
+  const users = dbUsers.map((user) => {
+    return {
+      _id: user._id,
+      name: user.name,
+      emil: user.email,
+    };
+  });
+
   res.send(users);
 });
 
 //HÄMTA SPEC. USER
 router.post("/", async (req, res) => {
-  const id = req.body.id;
-
-  const user = await userModel.findOne({ userId: id });
+  const user = await userModel.findOne({ _id: req.body.id });
   res.send(user);
 });
 
 //SKAPA USER
 router.post("/add", async (req, res) => {
-  //gör validering av input och kryptera lösenord
-
-  const body = req.body;
-
-  const user = await userModel.create({
-    ...body,
-    userId: crypto.randomUUID(),
-  });
+  const user = await userModel.create(req.body);
   res.send(user);
 });
 
 //LOGGA IN USER
-router.post("/login", (req, res) => {
-  const body = req.body;
-  res.send(body);
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  const dbUser = await userModel.findOne({ email });
+
+  //om användaren inte finns svara med 400
+  if (!dbUser) {
+    return res.sendStatus(400);
+  }
+  if (password !== dbUser.password) {
+    return res.sendStatus(400);
+  }
+  res.send("Du är inloggad!");
 });
 module.exports = router;
